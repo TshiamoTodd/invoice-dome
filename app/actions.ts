@@ -77,16 +77,18 @@ export async function createInvoice(prevState: any, formData: FormData) {
         to: [{email: 'tshiamo.mokwena19@gmail.com'}],
         template_uuid: "2abfbf53-e606-494c-b946-ae53de6df130",
         template_variables: {
-        "clientName": submission.value.clientName,
-        "invoiceNumber": submission.value.invoiceNumber,
-        "dueDate": new Intl.DateTimeFormat('en-US', {
+        clientName: submission.value.clientName,
+        invoiceNumber: submission.value.invoiceNumber,
+        dueDate: new Intl.DateTimeFormat('en-US', {
             dateStyle: 'long'
         }).format(new Date(submission.value.date)),
-        "totalAmount": formatCurrency({
+        totalAmount: formatCurrency({
             amount: submission.value.total,
             currency: submission.value.currency as any
         }),
-        "invoiceLink": `http://localhost:3000/api/invoice/${data.id}`
+            invoiceLink: process.env.NODE_ENV !== "production" 
+            ? `http://localhost:3000/api/invoice/${data.id}`
+            : `https://invoice-dome.vercel.app/api/invoice/${data.id}` 
         }
     })
 
